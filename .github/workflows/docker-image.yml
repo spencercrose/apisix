@@ -14,5 +14,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Set up Docker Buildx   
+      run: docker buildx install
+    - name: Configure Docker Buildx
+      run: docker buildx configure --use default --driver docker-container
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: docker buildx build --file Dockerfile --platform linux/amd64 -t apisix-nonroot:latest .
+
